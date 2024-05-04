@@ -6,6 +6,7 @@ function App() {
     const [oneProduct, setOneProduct] = useState([]);
     const [deleteProduct, setDeleteProduct] = useState([]);
     const [updateProduct, setUpdateProduct] = useState([]);
+    const [reviews, setReviews] = useState([]);
 
     //form hooks
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -23,6 +24,7 @@ function App() {
     //initial loading of all products
     useEffect(() => {
         getAllProducts();
+        setallViewer(true);
     }, []);
 
 
@@ -117,12 +119,23 @@ function App() {
                           <div class="card-body" style={{float:"left"}}>
                               <p class="card-text"><strong>{el.title}</strong></p>
                               <p class="card-text">{el.description}</p>
-                              <p class="card-test">Average Rating: {el.rating.rate}</p>
-                              <input type="button" value="View Reviews" style={{float:"right"}} onClick={() => selectGame(el.id)} class="btn btn-outline-dark"></input>
+                              <p class="card-test">Average Rating: {el["avg-rating"]}</p>
+                              <input type="button" value="View Reviews" style={{float:"right", margin:"10px"}} onClick={() => selectGame(el.id)} class="btn btn-outline-dark"></input>
+                              <input type="button" value="Remove Game" style={{float:"right", margin:"10px"}} onClick={() => deleteItem(el)} class="btn btn-danger"></input>
                               <div class="d-flex justify-content-between align-items-center">
                               </div>
                           </div>
                     </div>))}
+
+                    <div class="col">
+                          <div class="card-body" style={{float:"left"}}>
+                              <p class="card-text"><strong>Add A New Game</strong></p>
+                              <p class="card-text">Not seeing what you're looking for? Add your favorite game here!</p>
+                              <input type="button" value="Add Game" style={{float:"right", margin:"10px"}} onClick={() => setViewer(3)} class="btn btn-outline-dark"></input>
+                              <div class="d-flex justify-content-between align-items-center">
+                              </div>
+                          </div>
+                    </div>
                 </div>
             </div>
         </div>);
@@ -141,9 +154,6 @@ function App() {
 
 
 
-
-
-
     //get one
     const showOneItem = (
         <div>
@@ -158,7 +168,7 @@ function App() {
                           <div class="card-body" style={{float:"left"}}>
                               <p class="card-text"><strong>{el.title}</strong></p>
                               <p class="card-text">{el.description}</p>
-                              <p class="card-test">Average Rating: {el.rating.rate}</p>
+                              <p class="card-test">Average Rating: {el["avg-rating"]}</p>
                               <div class="d-flex justify-content-between align-items-center">
                               </div>
                           </div>
@@ -168,7 +178,7 @@ function App() {
         </div>
         
         <div>
-            {[oneProduct].map((el) => (
+            {reviews.map((el) => (
                 <div style={{margin:"20px"}}>
                     <p class="card-text"><strong>Review</strong></p>
                     <p class="card-text">By: <strong>{el.user}</strong></p>
@@ -189,6 +199,7 @@ function App() {
                     console.log(data);
                     let arr = [data];
                     setOneProduct(arr);
+                    setReviews([data.reviews]);
             });
         if (false === oneviewer)
             setoneViewer(true);

@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Fallout 4",
+    "description": "Bethesda Game Studios, the award-winning creators of Fallout 3 and The Elder Scrolls V: Skyrim, welcome you to the world of Fallout 4 – their most ambitious game ever, and the next generation of open-world gaming.",
+    "total-ratings": 4.5,
+	"num-ratings": 1,
+	"avg-rating": 4.5,
+	"image": "https://zanee5.github.io/coms319finalimages/fallout4.png",
+	"reviews": {
+      "user": "Ted Howard",
+      "rating": 4.5,
+      "text": "This game is great!!!",
+    }
+  },
+  {
+    "id": 2,
+    "title": "Baldur's Gate 3",
+    "description": "Baldur’s Gate 3 is a story-rich, party-based RPG set in the universe of Dungeons & Dragons, where your choices shape a tale of fellowship and betrayal, survival and sacrifice, and the lure of absolute power.",
+    "total-ratings": 4,
+	"num-ratings": 1,
+	"avg-rating": 4,
+	"image": "https://zanee5.github.io/coms319finalimages/bg3.png",
+	"reviews": {
+      "user": "Sven",
+      "rating": 4,
+      "text": "Great visuals and story elements",
+    }
+  }
+]

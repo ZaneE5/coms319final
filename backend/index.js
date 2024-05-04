@@ -9,7 +9,7 @@ const host = "localhost";
 const {MongoClient} = require("mongodb");
 
 const url = "mongodb://127.0.0.1:27017";
-const dbName = "reactdata";
+const dbName = "final";
 const client = new MongoClient(url);
 const db = client.db(dbName);
 
@@ -23,7 +23,7 @@ app.get("/catalog", async (req, res) => {
     console.log("Node connected successfully to GET MongoDB");
     const query = {};
     const results = await db
-    .collection("fakestore_catalog")
+    .collection("games")
     .find(query)
     .limit(100)
     .toArray();
@@ -37,7 +37,7 @@ app.get("/catalog/:id", async (req, res) => {
     await client.connect();
     console.log("Node connected successfully to GET-id MongoDB");
     const query = {"id": itemid };
-    const results = await db.collection("fakestore_catalog")
+    const results = await db.collection("games")
     .findOne(query);
     console.log("Results :", results);
     if (!results) res.send("Not Found").status(404);
@@ -66,7 +66,7 @@ app.post("/addItem", async (req, res) => {
         console.log(newDocument);
 
         const results = await db
-        .collection("fakestore_catalog")
+        .collection("games")
         .insertOne(newDocument);
 
         res.status(200);
@@ -83,7 +83,7 @@ app.delete("/deleteItem/:id", async (req, res) => {
         const itemid = parseInt(req.params.id);
 
         const results = await db
-        .collection("fakestore_catalog")
+        .collection("games")
         .deleteOne({id: itemid});
 
         res.status(200);
@@ -101,7 +101,7 @@ app.put("/update/:id", async (req, res) => {
         const values = Object.values(req.body);
 
         const results = await db
-        .collection("fakestore_catalog")
+        .collection("games")
         .updateOne({id: itemid}, {$set:{price:values[0]}});
 
         res.status(200);
