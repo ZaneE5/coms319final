@@ -182,6 +182,7 @@ function App() {
 
                 {reviews.map((el) => (
                     <div style={{margin:"20px"}}>
+                        <hr></hr>
                         <p class="card-text"><strong>Review</strong></p>
                         <p class="card-text">By: {el.user}</p>
                         <p class="card-test">Rating: {el.rating}</p>
