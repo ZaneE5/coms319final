@@ -53,14 +53,18 @@ app.post("/addItem", async (req, res) => {
         const newDocument = {
             "id": values[0],
             "title": values[1],
-            "price": values[2],
-            "description": values[3],
-            "category": values[4],
-            "image": values[5],
-            "rating": {
-                "rate": values[6],
-                "count": values[7]
-            }
+            "description": values[2],
+            "totalRatings": parseInt(values[5]),
+            "numRatings": 1,
+            "avgRating": parseInt(values[5]),
+            "image": values[3],
+            "reviews": [
+                {
+                    "user": values[4],
+                    "rating": parseInt(values[5]),
+                    "text": values[6]
+                }
+            ]
         }
 
         console.log(newDocument);
@@ -97,12 +101,30 @@ app.delete("/deleteItem/:id", async (req, res) => {
 app.put("/update/:id", async (req, res) => {
     try{
         await client.connect();
-        const itemid = parseInt(req.params.id);
-        const values = Object.values(req.body);
+        const gameid = parseInt(req.params.id);
+        const newReview = req.body;
+
+        const game = await db
+        .collection("games")
+        .findOne({"id": gameid});
+
+        const newNumRatings = game.numRatings + 1;
+        const newTotalRatings = game.totalRatings + newReview.rating;
+        const newAvgRating = newTotalRatings / newNumRatings;
 
         const results = await db
         .collection("games")
-        .updateOne({id: itemid}, {$set:{price:values[0]}});
+        .updateOne(
+            { "id": gameid },
+            {
+                $push: { "reviews": newReview },
+                $set: { 
+                    "numRatings": newNumRatings,
+                    "totalRatings": newTotalRatings,
+                    "avgRating": newAvgRating
+                }
+            }
+        );
 
         res.status(200);
         res.send(results);

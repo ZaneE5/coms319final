@@ -4,8 +4,6 @@ import {useForm} from "react-hook-form";
 function App() {
     const [product, setProduct] = useState([]);
     const [oneProduct, setOneProduct] = useState([]);
-    const [deleteProduct, setDeleteProduct] = useState([]);
-    const [updateProduct, setUpdateProduct] = useState([]);
     const [reviews, setReviews] = useState([]);
 
     //form hooks
@@ -14,7 +12,6 @@ function App() {
 
     const [allviewer, setallViewer] = useState(false); //get all viewer
     const [oneviewer, setoneViewer] = useState(false); //get one viewer
-    const [deleteviewer, setdeleteViewer] = useState(false); //delete viewer
     const [updateviewer, setupdateViewer] = useState(false); //update viewer
     const [addviewer, setaddViewer] = useState(false); //add viewer
     const [authorviewer, setauthorViewer] = useState(false); //add viewer
@@ -34,7 +31,8 @@ function App() {
     const order = data => {
         data.id = parseInt(data.id);
         console.log(data);
-        setTimeout(() => { addProduct(data); }, 2000);
+        addProduct(data);
+        setTimeout(() => { getAllProducts(); }, 2000);
     }
     function addProduct(data){
         var url = `http://localhost:8081/addItem`
@@ -48,23 +46,21 @@ function App() {
             .then(response => response.json())
             .then(data => console.log(data));
     }
+    const onInvalid = (errors) => console.error(errors);
+
     const addProductInputForm = (
         <div>
-            <h3>Add a product:</h3>
             
-            <form key={1} onSubmit={handleSubmit(order)} className="container mt-5">
+            <form key={1} onSubmit={handleSubmit(order, onInvalid)} className="container mt-5">
+                <p style={{margin:"10px"}}><strong>Add a product:</strong></p>
                 <div className="form-group">
                     <input {...register("id", { required: true })} placeholder="Id" className="form-control"/>
                     {errors.id && <p className="text-danger">Id is required.</p>}
                 </div>
+
                 <div className="form-group">
                     <input {...register("title", { required: true })} placeholder="Title" className="form-control"/>
                     {errors.title && <p className="text-danger">Title is required.</p>}
-                </div>
-
-                <div className="form-group">
-                    <input {...register("price", {required: true})} placeholder="Price" className="form-control"/>
-                    {errors.price && <p className="text-danger">Price is required.</p>}
                 </div>
 
                 <div className="form-group">
@@ -73,26 +69,30 @@ function App() {
                 </div>
 
                 <div className="form-group">
-                    <input {...register("category", { required: true })} placeholder="Category" className="form-control"/>
-                    {errors.category && <p className="text-danger">Category is required.</p>}
-                </div>
-
-                <div className="form-group">
                     <input {...register("image", { required: true })} placeholder="Image Url" className="form-control"/>
                     {errors.image && <p className="text-danger">Image is required.</p>}
                 </div>
 
+                <p style={{margin:"10px"}}><strong>And add an initial review:</strong></p>
+
                 <div className="form-group">
-                    <input {...register("rating", {required: true})} placeholder="Rating" className="form-control"/>
+                    <input {...register("user", { required: true })} placeholder="Username" className="form-control"/>
+                    {errors.user && <p className="text-danger">Username is required.</p>}
+                </div>
+
+                <div className="form-group">
+                    <input {...register("rating", { required: true })} placeholder="Rating" className="form-control"/>
                     {errors.rating && <p className="text-danger">Rating is required.</p>}
                 </div>
 
                 <div className="form-group">
-                    <input {...register("count", {required: true})} placeholder="Count" className="form-control"/>
-                    {errors.count && <p className="text-danger">Count is required.</p>}
+                    <input {...register("text", { required: true })} placeholder="Explanation" className="form-control"/>
+                    {errors.text && <p className="text-danger">Explanation is required.</p>}
                 </div>
 
-                <button type="submit" className="btn btn-primary">Add Product</button>
+                <button type="submit" style={{float:"right", margin:"10px"}} className="btn btn-primary">Add Product</button>
+                
+                <button style={{float:"right", margin:"10px"}} onClick={() => setViewer(1)} className="btn btn-secondary">Return</button>
             </form>
         </div>
     );
@@ -100,7 +100,7 @@ function App() {
 
 
     function selectGame(id){
-        getOneProduct(id);
+        getOneGame(id);
         setViewer(2);
     }
 
@@ -110,22 +110,26 @@ function App() {
     const viewAllGames = (
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
-                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 g-3">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 g-4">
                 
                 {product.map((el) => (
                     <div class="col">
-                        <img src={el.image} width="100px" style={{float:"left", margin:"10px"}} alt="images"></img>
+                        <img src={el.image} width="300" style={{float:"left", margin:"10px"}} alt="images"></img>
                           
                           <div class="card-body" style={{float:"left"}}>
                               <p class="card-text"><strong>{el.title}</strong></p>
                               <p class="card-text">{el.description}</p>
-                              <p class="card-test">Average Rating: {el["avg-rating"]}</p>
+                              <p class="card-test">Average Rating: {el.avgRating}</p>
                               <input type="button" value="View Reviews" style={{float:"right", margin:"10px"}} onClick={() => selectGame(el.id)} class="btn btn-outline-dark"></input>
                               <input type="button" value="Remove Game" style={{float:"right", margin:"10px"}} onClick={() => deleteItem(el)} class="btn btn-danger"></input>
                               <div class="d-flex justify-content-between align-items-center">
                               </div>
                           </div>
-                    </div>))}
+                          <hr></hr>
+                    </div>
+                    ))}
+
+                    <hr></hr>
 
                     <div class="col">
                           <div class="card-body" style={{float:"left"}}>
@@ -163,33 +167,32 @@ function App() {
                 
                 {oneProduct.map((el) => (
                     <div class="col">
-                        <img src={el.image} width="100px" style={{float:"left", margin:"10px"}} alt="images"></img>
+                        <img src={el.image} width="300" style={{float:"left", margin:"10px"}} alt="images"></img>
                           
                           <div class="card-body" style={{float:"left"}}>
                               <p class="card-text"><strong>{el.title}</strong></p>
                               <p class="card-text">{el.description}</p>
                               <p class="card-test">Average Rating: {el["avg-rating"]}</p>
+                              <button style={{float:"right", margin:"10px"}} onClick={() => setViewer(5)} class="btn btn-outline-dark">Add Review</button>
+                              <button style={{float:"right", margin:"10px"}} onClick={() => setViewer(1)} className="btn btn-secondary">Return</button>
                               <div class="d-flex justify-content-between align-items-center">
                               </div>
                           </div>
                     </div>))}
+
+                {reviews.map((el) => (
+                    <div style={{margin:"20px"}}>
+                        <p class="card-text"><strong>Review</strong></p>
+                        <p class="card-text">By: {el.user}</p>
+                        <p class="card-test">Rating: {el.rating}</p>
+                        <p class="card-test">Description: {el.text}</p>
+                    </div>))}
                 </div>
             </div>
         </div>
-        
-        <div>
-            {reviews.map((el) => (
-                <div style={{margin:"20px"}}>
-                    <p class="card-text"><strong>Review</strong></p>
-                    <p class="card-text">By: <strong>{el.user}</strong></p>
-                    <p class="card-test">Rating: {el.rating}</p>
-                    <p class="card-test">Description: {el.text}</p>
-                </div>))}
-        </div>
+    </div>);
 
-        </div>);
-
-    function getOneProduct(id) {
+    function getOneGame(id) {
         console.log(id);
         if (id >= 1) {
             fetch("http://localhost:8081/catalog/" + id)
@@ -197,9 +200,11 @@ function App() {
                 .then((data) => {
                     console.log("Show one product :", id);
                     console.log(data);
+                    console.log(data.reviews);
                     let arr = [data];
                     setOneProduct(arr);
-                    setReviews([data.reviews]);
+                    setReviews(data.reviews);
+                    console.log(reviews);
             });
         if (false === oneviewer)
             setoneViewer(true);
@@ -216,25 +221,6 @@ function App() {
 
     
 
-    //delete
-    const showOneItemToDelete = 
-        (<div>
-            <h3>Delete one Product by Id:</h3>
-            <input type="text" id="message" name="message" placeholder="id" onChange={(e) => getOneProductToDelete(e.target.value)} />
-
-            {deleteProduct.map((el) => (
-                <div key={el.id}>
-                    <img src={el.image} width={30} alt="images" /> <br />
-                    Title: {el.title} <br />
-                    Category: {el.category} <br />
-                    Price: {el.price} <br />
-                    Rating: {el.rating.rate} <br />
-                    <button type="button" className = "btn btn-secondary" variant="light" onClick={() => deleteItem(el)}> Confirm Delete</button>
-                </div>
-            ))}
-        </div>
-    );
-
     function deleteItem(el){
         console.log(el);
         var url = `http://localhost:8081/deleteItem/${el.id}`
@@ -243,27 +229,7 @@ function App() {
         .then(response => response.json())
         .then(data => console.log(data));
 
-        setdeleteViewer(false);
-        setDeleteProduct([]);
-    }
-
-    function getOneProductToDelete(id) {
-        console.log(id);
-        if (id >= 1) {
-            fetch("http://localhost:8081/catalog/" + id)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log("Show one product :", id);
-                    console.log(data);
-                    let arr = [data];
-                    setDeleteProduct(arr);
-            });
-        if (false === deleteviewer)
-            setdeleteViewer(true);
-        } else {
-            console.log("Wrong number of Product id.");
-            setdeleteViewer(false);
-        }
+        setTimeout(() => { getAllProducts();}, 2000);
     }
 
 
@@ -274,57 +240,44 @@ function App() {
 
     //update
     const update = data => {
-        data.price = parseInt(data.price);
+        data.rating = parseInt(data.rating);
         console.log(data);
-        setTimeout(() => { updateItem(data); }, 2000);
+        updateItem(data);
+        setTimeout(() => { getAllProducts();}, 2000);
     }
 
-    function getOneProductToUpdate(id) {
-        console.log(id);
-        if (id >= 1) {
-            fetch("http://localhost:8081/catalog/" + id)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log("Show one product :", id);
-                    console.log(data);
-                    let arr = [data];
-                    setUpdateProduct(arr);
-            });
-        if (false === updateviewer)
-            setupdateViewer(true);
-        } else {
-            console.log("Wrong number of Product id.");
-        }
-    }
-
-    const showOneItemToUpdate = 
-        (<div>
-            <h3>Update one Product by Id:</h3>
-            <input type="text" id="updatetextbox" name="message" placeholder="id" onChange={(e) => getOneProductToUpdate(e.target.value)} />
+    const showOneItemToUpdate = (
+        <div>
             
-            {updateProduct.map((el) => (
-                <div key={el.id}>
-                    <img src={el.image} width={30} alt="images" /> <br />
-                    Title: {el.title} <br />
-                    Category: {el.category} <br />
-                    Price: {el.price} <br />
-                    Rating: {el.rating.rate} <br />
-                    <form key={2} onSubmit={handleSubmit2(update)} className="container mt-5">
-                        <div className="form-group">
-                            <input {...register2("price", {required: true})} id="updatetextbox" placeholder="Price" className="form-control"/>
-                            {errors2.price && <p className="text-danger">Price is required.</p>}
-                        </div>
-                    <button type="submit" className="btn btn-primary">Update Product</button>
-                </form>
-            </div>))}
-        </div>
+        <form key={2} onSubmit={handleSubmit2(update, onInvalid)} className="container mt-5">
+            <p style={{margin:"10px"}}><strong>Add a Review:</strong></p>
+
+            <div className="form-group">
+                <input {...register2("user", { required: true })} placeholder="Username" className="form-control"/>
+                {errors2.user && <p className="text-danger">Username is required.</p>}
+            </div>
+
+            <div className="form-group">
+                <input {...register2("rating", { required: true })} placeholder="Rating" className="form-control"/>
+                {errors2.rating && <p className="text-danger">Rating is required.</p>}
+            </div>
+
+            <div className="form-group">
+                <input {...register2("text", { required: true })} placeholder="Explanation" className="form-control"/>
+                {errors2.text && <p className="text-danger">Explanation is required.</p>}
+            </div>
+
+            <button type="submit" style={{float:"right", margin:"10px"}} className="btn btn-primary">Add Review</button>
+            
+            <button style={{float:"right", margin:"10px"}} onClick={() => setViewer(2)} className="btn btn-secondary">Return</button>
+        </form>
+    </div>
     );
 
     function updateItem(data){
-        var id = document.getElementById("updatetextbox").value;
-        console.log(id);
         console.log(data);
-        var url = `http://localhost:8081/update/${id}`;
+        console.log(oneProduct[0].id);
+        var url = `http://localhost:8081/update/${oneProduct[0].id}`;
     
         fetch(url, {
             method: 'PUT', 
@@ -333,26 +286,20 @@ function App() {
         })
             .then(response => response.json())
             .then(data => console.log(data));
-
-        setUpdateProduct([]);
-
-        setupdateViewer(false);
     }
 
 
     const showAuthors = (
-        <section class="py-5 text-center container">
+        <section class="py-5 container">
             <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto" id="title">
-                    <h1 class="fw-light">About the Authors</h1>
+                    <h1 class="fw-light">About the Authors</h1> <br></br>
                     <p><strong>Class: </strong>SE/ComS319 Construction of User Interfaces, Spring 2024</p>
-                    <p><strong>Date: </strong>4/27/2024</p>
+                    <p><strong>Date: </strong>4/08/2024</p>
                     <p><strong>Students: </strong>Benjamin Diaz and Zane Eason</p>
-                    <p><strong>Professor: </strong>Dr. Abraham Aldaco</p>
-                    <p><strong>Emails: </strong>bdiaz9@iastate.edu and zseason@iastate.edu</p>
-                    <p><strong>About the project: </strong>Develop a MERN (MongoDB, Express, React, Nodejs) application for managing a catalog of items using the
-"https://fakestoreapi.com/products" dataset. Implement key CRUD functionalities and ensure a well-organized,
-user-friendly interface.</p>
+                    <p><strong>Professors: </strong>Dr. Abraham N. Aldaco Gastelum and Dr. Ali Jannesari</p>
+                    <p><strong>Student Emails: </strong>bdiaz9@iastate.edu and zseason@iastate.edu</p>
+                    <p><strong>Professor Emails: </strong>aaldaco@iastate.edu and jannesar@iastate.edu</p>
                 </div>
             </div>
         </section>
@@ -363,7 +310,6 @@ user-friendly interface.</p>
             setallViewer(!allviewer);
             setoneViewer(false);
             setaddViewer(false);
-            setdeleteViewer(false);
             setupdateViewer(false);
             setauthorViewer(false);
         }
@@ -371,7 +317,6 @@ user-friendly interface.</p>
             setallViewer(false);
             setoneViewer(!oneviewer);
             setaddViewer(false);
-            setdeleteViewer(false);
             setupdateViewer(false);
             setauthorViewer(false);
         }
@@ -379,15 +324,6 @@ user-friendly interface.</p>
             setallViewer(false);
             setoneViewer(false);
             setaddViewer(!addviewer);
-            setdeleteViewer(false);
-            setupdateViewer(false);
-            setauthorViewer(false);
-        }
-        if (number == 4){
-            setallViewer(false);
-            setoneViewer(false);
-            setaddViewer(false);
-            setdeleteViewer(!deleteviewer);
             setupdateViewer(false);
             setauthorViewer(false);
         }
@@ -395,15 +331,13 @@ user-friendly interface.</p>
             setallViewer(false);
             setoneViewer(false);
             setaddViewer(false);
-            setdeleteViewer(false);
             setupdateViewer(!updateviewer);
             setauthorViewer(false);
         }
         if (number == 6){
-            setallViewer(false);
+            setallViewer(!allviewer);
             setoneViewer(false);
             setaddViewer(false);
-            setdeleteViewer(false);
             setupdateViewer(false);
             setauthorViewer(!authorviewer);
         }
@@ -442,14 +376,8 @@ user-friendly interface.</p>
 
         {allviewer && viewAllGames}
 
-        
-
         <div>
             {oneviewer && showOneItem}
-        </div>
-
-        <div>
-            {deleteviewer && showOneItemToDelete}
         </div>
 
         <div>
