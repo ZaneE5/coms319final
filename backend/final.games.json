@@ -1,0 +1,114 @@
+[{
+  "_id": {
+    "$oid": "66397980c7d2c88178810c72"
+  },
+  "id": 1,
+  "title": "Fallout 4",
+  "description": "Bethesda Game Studios, the award-winning creators of Fallout 3 and The Elder Scrolls V: Skyrim, welcome you to the world of Fallout 4 – their most ambitious game ever, and the next generation of open-world gaming.",
+  "totalRatings": 4.5,
+  "numRatings": 1,
+  "avgRating": 4.5,
+  "image": "https://zanee5.github.io/coms319finalimages/fallout4.png",
+  "reviews": [
+    {
+      "user": "Ted Howard",
+      "rating": 4.5,
+      "text": "This game is great!!!"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "66397980c7d2c88178810c73"
+  },
+  "id": 2,
+  "title": "Baldur's Gate 3",
+  "description": "Baldur’s Gate 3 is a story-rich, party-based RPG set in the universe of Dungeons & Dragons, where your choices shape a tale of fellowship and betrayal, survival and sacrifice, and the lure of absolute power.",
+  "totalRatings": 4,
+  "numRatings": 1,
+  "avgRating": 4,
+  "image": "https://zanee5.github.io/coms319finalimages/bg3.png",
+  "reviews": [
+    {
+      "user": "Sven",
+      "rating": 4,
+      "text": "Great visuals and story elements"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "66397980c7d2c88178810c74"
+  },
+  "id": 3,
+  "title": "Hades",
+  "description": "Defy the god of the dead as you hack and slash out of the Underworld in this rogue-like dungeon crawler from the creators of Bastion, Transistor, and Pyre.",
+  "totalRatings": 5,
+  "numRatings": 1,
+  "avgRating": 5,
+  "image": "https://zanee5.github.io/coms319finalimages/hades.png",
+  "reviews": [
+    {
+      "user": "Zane",
+      "rating": 5,
+      "text": "Great game, looking forward to the sequel"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "66397980c7d2c88178810c75"
+  },
+  "id": 4,
+  "title": "Helldivers 2",
+  "description": "The Galaxy’s Last Line of Offence. Enlist in the Helldivers and join the fight for freedom across a hostile galaxy in a fast, frantic, and ferocious third-person shooter.",
+  "totalRatings": 2,
+  "numRatings": 1,
+  "avgRating": 2,
+  "image": "https://zanee5.github.io/coms319finalimages/helldivers2.png",
+  "reviews": [
+    {
+      "user": "Jonathan",
+      "rating": 2,
+      "text": "The recent issues were awful"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "66397980c7d2c88178810c76"
+  },
+  "id": 5,
+  "title": "Stardew Valley",
+  "description": "You've inherited your grandfather's old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life. Can you learn to live off the land and turn these overgrown fields into a thriving home?",
+  "totalRatings": 5,
+  "numRatings": 1,
+  "avgRating": 5,
+  "image": "https://zanee5.github.io/coms319finalimages/stardew.png",
+  "reviews": [
+    {
+      "user": "Wyatt",
+      "rating": 5,
+      "text": "I would rate this higher if I could"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "66397980c7d2c88178810c77"
+  },
+  "id": 6,
+  "title": "Cyberpunk 2077",
+  "description": "Cyberpunk 2077 is an open-world, action-adventure RPG set in the dark future of Night City — a dangerous megalopolis obsessed with power, glamor, and ceaseless body modification.",
+  "totalRatings": 4,
+  "numRatings": 1,
+  "avgRating": 4,
+  "image": "https://zanee5.github.io/coms319finalimages/cyberpunk.png",
+  "reviews": [
+    {
+      "user": "Zack",
+      "rating": 4,
+      "text": "had a rough launch, but good game! :)"
+    }
+  ]
+}]
